@@ -6,18 +6,12 @@
 		================================
 
 		(c) 2000 Markus Fischer
-		<mfischer@josefine.ben.tuwien.ac.at>
-		   http://josefine.ben.tuwien.ac.at/~mfischer/
+		   https://github.com/mfn/rtfclass
 
-		Latest versions of this class can always be found at
-			http://josefine.ben.tuwien.ac.at/~mfischer/developing/php/rtf/rtfclass.phps
-		Testing suite is available at
-			http://josefine.ben.tuwien.ac.at/~mfischer/developing/php/rtf/
-
-		License: GPLv2
+		License: GNU AGPLv3
 
 		Specification:
-			http://msdn.microsoft.com/library/default.asp?URL=/library/specs/rtfspec.htm
+			http://msdn.microsoft.com/en-us/library/aa140277%28v=office.10%29.aspx
 
 		General Notes:
 		==============
@@ -48,6 +42,10 @@
 		Tue Nov 28 02:22:16 CET 2000	mfischer
 			Implemented alignment (left, center, right) with HTML <DIV .. tags
 			Also implemented translation for < and > character when outputting html or xml
+
+		Sun Dec 18 16:36:00 CET 2011	mfischer
+			Switch to GNU AGPLv3 (http://www.gnu.org/licenses/agpl-3.0.html) and
+			update links.
 
 		Remarks:
 		========
