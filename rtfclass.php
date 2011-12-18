@@ -143,7 +143,7 @@
 		/*
 			Class Constructor:
 			Takes as argument the raw RTF stream
-			(Depending on your php configuration you need to stripslash() your stream before handling it to the class)
+			(Note under certain circumstances the stream has to be stripslash'ed before handling over)
 			Initialises some class-global variables
 		*/
 		function rtf( $data) {
@@ -382,8 +382,7 @@
 			flush text in queue
 		*/
 		function flushQueue() {
-			//if( strlen( $this->queue)) {
-			if( 1) {
+			if( strlen( $this->queue)) {
 				// processing logic
 				if( ereg( "^[0-9]+$", $this->flags["fonttbl_want_fcharset"])) {
 					$this->fonttable[$this->flags["fonttbl_want_fcharset"]]["charset"] = $this->queue;
@@ -392,8 +391,7 @@
 				}
 				
 				// output logic
-				//if( strlen( $this->queue)) {
-				if( 1) {
+				if( strlen( $this->queue)) {
 					/*
 						Everything which passes this is (or, at leat, *should*) be only outputted plaintext
 						Thats why we can safely add the css-stylesheet when using wantHTML
@@ -424,24 +422,17 @@
 							
 							/* define new style for that span */
 							$this->styles["f".$this->flags["fonttbl_current_read"]."s".$this->flags["fontsize"]] = "font-family:".$this->fonttable[$this->flags["fonttbl_current_read"]]["charset"]." font-size:".$this->flags["fontsize"].";";
+							/* write span start */
+							$this->out .= "<span class=\"f".$this->flags["fonttbl_current_read"]."s".$this->flags["fontsize"]."\">";
 
-							//$this->out .= "strlen = ".strlen( $this->queue);
-							if( strlen( $this->queue)) {
-								/* write span start */
-								$this->out .= "<span class=\"f".$this->flags["fonttbl_current_read"]."s".$this->flags["fontsize"]."\">";
-
-								/* check if the span content has a modifier */
-								$this->checkHtmlSpanContent( "start");
-								/* write span content */
-								$this->out .= $this->queue;
-								/* close modifiers */
-								$this->checkHtmlSpanContent( "stop");
-								/* close span */
-								$this->out .= "</span>";
-							} else {
-								// empty queue ? means line break ? 
-								$this->out .= "<br>";
-							}
+							/* check if the span content has a modifier */
+							$this->checkHtmlSpanContent( "start");
+							/* write span content */
+							$this->out .= $this->queue;
+							/* close modifiers */
+							$this->checkHtmlSpanContent( "stop");
+							/* close span */
+							"</span>";
 						}
 					}
 					$this->queue = "";
