@@ -47,6 +47,10 @@
 			Switch to GNU AGPLv3 (http://www.gnu.org/licenses/agpl-3.0.html) and
 			update links.
 
+		Sun Jan 01 14:30:00 CET 2012	dw2412
+			Replaced ereg with preg_match function since ereg is deprecated with PHP 5.3
+			Introduced fonttbl_want_fcharset watch to prevent nasty message about uninitialized var
+
 		Remarks:
 		========
 		This class and all work done here is dedicated to Tatjana.
@@ -301,7 +305,7 @@
 			Dispatch the control word to the output stream
 		*/
 		function flushControl() {
-			if( ereg( "^([A-Za-z]+)(-?[0-9]*) ?$", $this->cword, $match)) {
+			if( preg_match( "/^([A-Za-z]+)(-?[0-9]*) ?$/", $this->cword, $match)) {
 
 				$this->parseControl( $match[1], $match[2]);
 
@@ -382,7 +386,8 @@
 		function flushQueue() {
 			if( strlen( $this->queue)) {
 				// processing logic
-				if( ereg( "^[0-9]+$", $this->flags["fonttbl_want_fcharset"])) {
+				if( isset($this->flags["fonttbl_want_fcharset"]) && 
+					preg_match( "/^[0-9]+$/", $this->flags["fonttbl_want_fcharset"])) {
 					$this->fonttable[$this->flags["fonttbl_want_fcharset"]]["charset"] = $this->queue;
 					$this->flags["fonttbl_want_fcharset"] = "";
 					$this->queue = "";
@@ -399,7 +404,7 @@
 
 					if( $this->wantHTML) {
 						// only output html if a valid (for now, just numeric;) fonttable is given
-						if( ereg( "^[0-9]+$", $this->flags["fonttbl_current_read"])) {
+						if( preg_match( "/^[0-9]+$/", $this->flags["fonttbl_current_read"])) {
 							
 							if( $this->flags["beginparagraph"] == true) {
 								$this->flags["beginparagraph"] = false;
@@ -534,7 +539,7 @@
 										Watch the RE: there's an optional space at the end which IS part of
 										the control word (but actually its ignored by flushControl)
 									*/
-									if( ereg( "^[a-zA-Z0-9-]?$", $this->rtf[$i])) { // continue parsing
+									if( preg_match( "/^[a-zA-Z0-9-]?$/", $this->rtf[$i])) { // continue parsing
 										$this->cword .= $this->rtf[$i];
 										$this->cfirst = false;
 									} else {
@@ -550,7 +555,7 @@
 												$specialmatch = true;
 												$this->cw = false; $this->cfirst = false; $this->cword = "";
 											} else 
-											if( ereg( "^[{}\*]$", $this->rtf[$i])) {
+											if( preg_match( "/^[{}\*]$/", $this->rtf[$i])) {
 												$this->flushComment( "control symbols not yet handled");
 												$specialmatch = true;
 											}
